@@ -1,0 +1,11 @@
+- Add EXIT operator
+- Add unary operators
+    - NEG (negates the number)
+    - LOG_10
+    - LOG_2
+    - LN (natural log)
+    - SQRT
+- Add binary operators
+    - ROOT
+- Add memory (unary MEM operator)
+- Add expressions
