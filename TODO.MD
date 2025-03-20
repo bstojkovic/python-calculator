@@ -1,9 +1,5 @@
-- Add unary operators
-    - LOG_10
-    - LOG_2
-    - LN (natural log)
-    - SQRT
 - Add binary operators
     - ROOT
+- Add possibility to input special numbers (e, pi, ...)
 - Add memory (unary MEM operator)
 - Add expressions

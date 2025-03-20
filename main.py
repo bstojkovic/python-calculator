@@ -1,3 +1,5 @@
+import math
+
 class Operator:
     def __init__(self, op, name, aliases, fn, is_unary=False):
         self.op = op
@@ -44,7 +46,11 @@ OPERATORS = [
     Operator('^', 'POWER', ['POW', 'TO THE POWER OF'], lambda x,y: x**y),
 
     # Unary operators
-    Operator(None, 'NEG', ['NEGATIVE', 'NEGATE'], lambda x: -x, True)
+    Operator(None, 'NEG', ['NEGATIVE', 'NEGATE'], lambda x: -x, True),
+    Operator(None, 'SQRT', ['SQUARE ROOT'], lambda x: math.sqrt(x), True),
+    Operator(None, 'LOG10', ['LOG 10', 'LOG_10'], lambda x: math.log10(x), True),
+    Operator(None, 'LOG2', ['LOG 2', 'LOG_2'], lambda x: math.log2(x), True),
+    Operator(None, 'LN', ['LOG NATURAL', 'NATURAL LOG'], lambda x: math.log(x, math.e), True)
 ]
 
 def input_number():
