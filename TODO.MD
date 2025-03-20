@@ -1,5 +1,4 @@
 - Add unary operators
-    - NEG (negates the number)
     - LOG_10
     - LOG_2
     - LN (natural log)

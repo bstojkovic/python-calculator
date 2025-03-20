@@ -32,13 +32,19 @@ def display_help():
         print('Operator: ' + op_obj.op + ' (' + op_obj.name + '); Aliases: ' + ', '.join(op_obj.aliases))
 
 OPERATORS = [
+    # Control operations
     Operator(None, 'EXIT', ['QUIT', 'ESCAPE'], lambda: None),
     Operator('?', 'HELP', ['INFO', 'OPS', 'OPERATORS'], display_help),
+    
+    # Basic arithmetic
     Operator('+', 'PLUS', ['ADD', 'ADDITION'], lambda x,y: x+y),
     Operator('-', 'MINUS', ['SUB', 'SUBTRACT', 'SUBTRACTION'], lambda x,y: x-y),
     Operator('*', 'TIMES', ['MUL', 'MULT', 'MULTIPLY', 'MULTIPLICATION'], lambda x,y: x*y),
     Operator('/', 'OVER', ['DIV', 'DIVIDE', 'DIVIDE BY'], lambda x,y: x/y),
-    Operator('^', 'POWER', ['POW', 'TO THE POWER OF'], lambda x,y: x**y)
+    Operator('^', 'POWER', ['POW', 'TO THE POWER OF'], lambda x,y: x**y),
+
+    # Unary operators
+    Operator(None, 'NEG', ['NEGATIVE', 'NEGATE'], lambda x: -x, True)
 ]
 
 def input_number():
