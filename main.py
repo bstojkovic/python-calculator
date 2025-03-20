@@ -32,6 +32,7 @@ def display_help():
         print('Operator: ' + op_obj.op + ' (' + op_obj.name + '); Aliases: ' + ', '.join(op_obj.aliases))
 
 OPERATORS = [
+    Operator(None, 'EXIT', ['QUIT', 'ESCAPE'], lambda: None),
     Operator('?', 'HELP', ['INFO', 'OPS', 'OPERATORS'], display_help),
     Operator('+', 'PLUS', ['ADD', 'ADDITION'], lambda x,y: x+y),
     Operator('-', 'MINUS', ['SUB', 'SUBTRACT', 'SUBTRACTION'], lambda x,y: x-y),
@@ -69,6 +70,7 @@ def input_operator():
         print("No such operator found! Use 'help' to list all operators.")
 
 num = input_number()
+exit = False
 
 while True:
     op = None
@@ -76,10 +78,17 @@ while True:
     while True:
         op = input_operator()
 
+        if op.name == 'EXIT':
+            exit = True
+            break
+
         if op.name == 'HELP':
             op.apply()
             continue
 
+        break
+
+    if exit:
         break
 
     if op.is_unary:
@@ -90,5 +99,3 @@ while True:
         num = op.apply(num, num2)
 
     print(num)
-
-input("Press ENTER to exit...")

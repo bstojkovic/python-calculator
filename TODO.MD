@@ -1,4 +1,3 @@
-- Add EXIT operator
 - Add unary operators
     - NEG (negates the number)
     - LOG_10
