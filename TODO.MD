@@ -1,5 +1,6 @@
 - Add binary operators
     - ROOT
+- Prevent errors (ValueError, ZeroDivisionError) during calculations (applying operations)
 - Add possibility to input special numbers (e, pi, ...)
 - Add memory (unary MEM operator)
 - Add expressions
