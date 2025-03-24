@@ -31,7 +31,10 @@ class Operator:
 
 def display_help():
     for op_obj in OPERATORS:
-        print('Operator: ' + op_obj.op + ' (' + op_obj.name + '); Aliases: ' + ', '.join(op_obj.aliases))
+        print(
+            'Operator: ' + op_obj.op + ' (' + op_obj.name + '); ' +
+            (('Aliases: ' + ', '.join(op_obj.aliases)) if op_obj.aliases else 'No aliases')
+        )
 
 OPERATORS = [
     # Control operations
@@ -45,12 +48,15 @@ OPERATORS = [
     Operator('/', 'OVER', ['DIV', 'DIVIDE', 'DIVIDE BY'], lambda x,y: x/y),
     Operator('^', 'POWER', ['POW', 'TO THE POWER OF'], lambda x,y: x**y),
 
-    # Unary operators
+    # Basic unary operators
     Operator(None, 'NEG', ['NEGATIVE', 'NEGATE'], lambda x: -x, True),
     Operator(None, 'SQRT', ['SQUARE ROOT'], lambda x: math.sqrt(x), True),
     Operator(None, 'LOG10', ['LOG 10', 'LOG_10'], lambda x: math.log10(x), True),
     Operator(None, 'LOG2', ['LOG 2', 'LOG_2'], lambda x: math.log2(x), True),
-    Operator(None, 'LN', ['LOG NATURAL', 'NATURAL LOG'], lambda x: math.log(x, math.e), True)
+    Operator(None, 'LN', ['LOG NATURAL', 'NATURAL LOG'], lambda x: math.log(x, math.e), True),
+
+    # Other binary operators
+    Operator(None, 'ROOT', ['ROOT OPERATION'], lambda x,y: pow(x, y**-1))
 ]
 
 def input_number():
