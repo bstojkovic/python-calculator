@@ -11,23 +11,32 @@ class Operator:
         self.aliases = aliases
         self.fn = fn
         self.is_unary = is_unary
-    
+
     def check(self, op):
         op = op.upper()
 
         if self.op == op:
             return True
-        
+
         if self.name == op:
             return True
-        
+
         if op in self.aliases:
             return True
-        
+
         return False
-    
+
     def apply(self, *nums):
-        return self.fn(*nums)
+        try:
+            return self.fn(*nums)
+        except ValueError as e:
+            print("Invalid number for operation!")
+            print(e)
+        except ZeroDivisionError as e:
+            print("Division by zero is not allowed!")
+            print(e)
+
+        return None
 
 def display_help():
     for op_obj in OPERATORS:
@@ -40,7 +49,7 @@ OPERATORS = [
     # Control operations
     Operator(None, 'EXIT', ['QUIT', 'ESCAPE'], lambda: None),
     Operator('?', 'HELP', ['INFO', 'OPS', 'OPERATORS'], display_help),
-    
+
     # Basic arithmetic
     Operator('+', 'PLUS', ['ADD', 'ADDITION'], lambda x,y: x+y),
     Operator('-', 'MINUS', ['SUB', 'SUBTRACT', 'SUBTRACTION'], lambda x,y: x-y),
@@ -72,7 +81,7 @@ def input_number():
             continue
         else:
             break
-    
+
     return num
 
 def input_operator():
@@ -84,7 +93,7 @@ def input_operator():
         for op_obj in OPERATORS:
             if op_obj.check(op_str):
                 return op_obj
-        
+
         print("No such operator found! Use 'help' to list all operators.")
 
 num = input_number()
@@ -110,10 +119,16 @@ while True:
         break
 
     if op.is_unary:
-        num = op.apply(num)
+        temp_num = op.apply(num)
+
+        if temp_num is not None:
+            num = temp_num
     else:
         num2 = input_number()
 
-        num = op.apply(num, num2)
+        temp_num = op.apply(num, num2)
+
+        if temp_num is not None:
+            num = temp_num
 
     print(num)
