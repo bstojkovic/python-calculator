@@ -1,3 +1,3 @@
-- Add possibility to input special numbers (e, pi, ...)
+- Add CLEAR command
 - Add memory (unary MEM operator)
 - Add expressions

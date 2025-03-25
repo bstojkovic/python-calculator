@@ -68,6 +68,23 @@ OPERATORS = [
     Operator(None, 'ROOT', ['ROOT OPERATION'], lambda x,y: pow(x, y**-1))
 ]
 
+class SpecialNumber:
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+SPECIAL_NUMBERS = [
+    SpecialNumber('e', math.e),
+    SpecialNumber('pi', math.pi)
+]
+
+def catch_special_number(num):
+    for num_obj in SPECIAL_NUMBERS:
+        if num_obj.name == num:
+            return num_obj.value
+
+    return None
+
 def input_number():
     num = None
 
@@ -77,7 +94,13 @@ def input_number():
         try:
             num = float(num)
         except ValueError as e:
+            spec_num = catch_special_number(num)
+
+            if spec_num is not None:
+                return spec_num
+
             print("Invalid number!")
+
             continue
         else:
             break
