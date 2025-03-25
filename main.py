@@ -68,7 +68,8 @@ OPERATORS = [
     Operator(None, 'LN', ['LOG NATURAL', 'NATURAL LOG'], lambda x: math.log(x, math.e), True),
 
     # Other binary operators
-    Operator(None, 'ROOT', ['ROOT OPERATION'], lambda x,y: pow(x, y**-1))
+    Operator(None, 'ROOT', ['ROOT OPERATION'], lambda x,y: pow(x, y**-1)),
+    Operator(None, 'LOG', ['GENERAL LOG'], lambda x,y: math.log(x, y))
 ]
 
 class SpecialNumber:
