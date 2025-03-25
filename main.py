@@ -1,5 +1,7 @@
 import math
 
+clear_number_requested = False
+
 class Operator:
     def __init__(self, op, name, aliases, fn, is_unary=False):
         self.op = op
@@ -48,7 +50,8 @@ def display_help():
 OPERATORS = [
     # Control operations
     Operator(None, 'EXIT', ['QUIT', 'ESCAPE'], lambda: None),
-    Operator('?', 'HELP', ['INFO', 'OPS', 'OPERATORS'], display_help),
+    Operator('?', 'HELP', ['LIST', 'INFO', 'OPS', 'OPERATORS'], display_help),
+    Operator(None, 'CLEAR', ['CLR'], lambda: None),
 
     # Basic arithmetic
     Operator('+', 'PLUS', ['ADD', 'ADDITION'], lambda x,y: x+y),
@@ -121,6 +124,7 @@ def input_operator():
 
 num = input_number()
 exit = False
+num_cleared = False
 
 while True:
     op = None
@@ -136,10 +140,18 @@ while True:
             op.apply()
             continue
 
+        if op.name == 'CLEAR':
+            num = input_number()
+            num_cleared = True
+
         break
 
     if exit:
         break
+
+    if num_cleared:
+        num_cleared = False
+        continue
 
     if op.is_unary:
         temp_num = op.apply(num)
