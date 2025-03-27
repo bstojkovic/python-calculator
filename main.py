@@ -52,6 +52,7 @@ OPERATORS = [
     Operator(None, 'EXIT', ['QUIT', 'ESCAPE'], lambda: None),
     Operator('?', 'HELP', ['LIST', 'INFO', 'OPS', 'OPERATORS'], display_help),
     Operator(None, 'CLEAR', ['CLR'], lambda: None),
+    Operator(None, 'MEM', ['MEMORY', 'MEMORIZE'], lambda: None, True),
 
     # Basic arithmetic
     Operator('+', 'PLUS', ['ADD', 'ADDITION'], lambda x,y: x+y),
@@ -79,7 +80,8 @@ class SpecialNumber:
 
 SPECIAL_NUMBERS = [
     SpecialNumber('e', math.e),
-    SpecialNumber('pi', math.pi)
+    SpecialNumber('pi', math.pi),
+    SpecialNumber('mem', '<mem>')
 ]
 
 def catch_special_number(num):
@@ -124,6 +126,7 @@ def input_operator():
         print("No such operator found! Use 'help' to list all operators.")
 
 num = input_number()
+mem_num = None
 exit = False
 num_cleared = False
 
@@ -145,6 +148,11 @@ while True:
             num = input_number()
             num_cleared = True
 
+        if op.name == 'MEM':
+            mem_num = num
+            num = input_number()
+            num_cleared = True
+
         break
 
     if exit:
@@ -162,6 +170,9 @@ while True:
     else:
         num2 = input_number()
 
+        if num2 == '<mem>':
+            num2 = mem_num
+            
         temp_num = op.apply(num, num2)
 
         if temp_num is not None:
