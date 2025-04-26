@@ -1,7 +1,5 @@
 import math
 
-clear_number_requested = False
-
 class Operator:
     def __init__(self, op, name, aliases, fn, is_unary=False):
         self.op = op
@@ -84,6 +82,11 @@ SPECIAL_NUMBERS = [
     SpecialNumber('mem', '<mem>')
 ]
 
+MEMORY = {
+    'num': None,
+    'mem_num': None
+}
+
 def catch_special_number(num):
     for num_obj in SPECIAL_NUMBERS:
         if num_obj.name == num:
@@ -92,90 +95,99 @@ def catch_special_number(num):
     return None
 
 def input_number():
-    num = None
+    num = input("Input a number: ")
+    invalid_num = False
 
-    while True:
-        num = input("Input a number: ")
+    try:
+        num = float(num)
+    except ValueError as e:
+        spec_num = catch_special_number(num)
 
-        try:
-            num = float(num)
-        except ValueError as e:
-            spec_num = catch_special_number(num)
-
-            if spec_num is not None:
-                return spec_num
-
-            print("Invalid number!")
-
-            continue
+        if spec_num is None:
+            invalid_num = True
+        elif spec_num == '<mem>':
+            return MEMORY['mem_num']
         else:
-            break
+            return spec_num
+
+    if invalid_num:
+        print("Invalid number!")
+        return input_number()
 
     return num
 
 def input_operator():
-    op = None
+    op_str = input("Input an operator (type 'help' for a list): ")
 
-    while True:
-        op_str = input("Input an operator (type 'help' for a list): ")
+    for op_obj in OPERATORS:
+        if op_obj.check(op_str):
+            return op_obj
 
-        for op_obj in OPERATORS:
-            if op_obj.check(op_str):
-                return op_obj
+    print("No such operator found! Use 'help' to list all operators.")
 
-        print("No such operator found! Use 'help' to list all operators.")
+    return input_operator()
 
-num = input_number()
-mem_num = None
-exit = False
-num_cleared = False
+def apply_unary_operator(op, num):
+    temp_num = op.apply(num)
 
-while True:
-    op = None
+    if temp_num is not None:
+        num = temp_num
 
-    while True:
-        op = input_operator()
+    return num
 
-        if op.name == 'EXIT':
-            exit = True
-            break
+def apply_binary_operator(op, num, num2):
+    temp_num = op.apply(num, num2)
 
-        if op.name == 'HELP':
-            op.apply()
-            continue
+    if temp_num is not None:
+        num = temp_num
 
-        if op.name == 'CLEAR':
-            num = input_number()
-            num_cleared = True
+    return num
 
-        if op.name == 'MEM':
-            mem_num = num
-            num = input_number()
-            num_cleared = True
+def main():
+    global MEMORY
+    num = MEMORY['num']
 
-        break
+    # Gather input
 
-    if exit:
-        break
+    if num is None:
+        num = input_number()
 
-    if num_cleared:
-        num_cleared = False
-        continue
+    op = input_operator()
+
+    # Handle special operators
+
+    if op.name == 'EXIT':
+        return -1
+
+    if op.name == 'HELP':
+        op.apply()
+        return 0
+
+    if op.name == 'CLEAR':
+        num = input_number()
+        MEMORY['num'] = None
+        return 0
+
+    if op.name == 'MEM':
+        MEMORY['mem_num'] = num
+        MEMORY['num'] = None
+        return 0
+    
+    # Apply the operator
 
     if op.is_unary:
-        temp_num = op.apply(num)
-
-        if temp_num is not None:
-            num = temp_num
+        num = apply_unary_operator(op, num)
     else:
         num2 = input_number()
+        num = apply_binary_operator(op, num, num2)
+    
+    # Store and print the result
 
-        if num2 == '<mem>':
-            num2 = mem_num
-            
-        temp_num = op.apply(num, num2)
-
-        if temp_num is not None:
-            num = temp_num
-
+    MEMORY['num'] = num
     print(num)
+
+while True:
+    status_code = main()
+
+    if status_code == -1:
+        break
