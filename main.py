@@ -1,7 +1,5 @@
 import math
 
-clear_number_requested = False
-
 class Operator:
     def __init__(self, op, name, aliases, fn, is_unary=False):
         self.op = op
