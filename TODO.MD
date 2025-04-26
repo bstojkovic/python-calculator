@@ -1,1 +1,2 @@
 - Add expressions
+- Add binary, hex, octal numbers

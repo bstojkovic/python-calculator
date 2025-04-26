@@ -125,6 +125,25 @@ def input_operator():
 
         print("No such operator found! Use 'help' to list all operators.")
 
+def apply_unary_operator(op, num):
+    temp_num = op.apply(num)
+
+    if temp_num is not None:
+        num = temp_num
+    
+    return num
+
+def apply_binary_operator(op, num, num2):
+    if num2 == '<mem>':
+        num2 = mem_num
+        
+    temp_num = op.apply(num, num2)
+
+    if temp_num is not None:
+        num = temp_num
+    
+    return num
+
 num = input_number()
 mem_num = None
 exit = False
@@ -163,19 +182,9 @@ while True:
         continue
 
     if op.is_unary:
-        temp_num = op.apply(num)
-
-        if temp_num is not None:
-            num = temp_num
+        num = apply_unary_operator(op, num)
     else:
         num2 = input_number()
-
-        if num2 == '<mem>':
-            num2 = mem_num
-            
-        temp_num = op.apply(num, num2)
-
-        if temp_num is not None:
-            num = temp_num
+        num = apply_binary_operator(op, num, num2)
 
     print(num)
